@@ -3,7 +3,7 @@
   "summary": {
     "title": "ThreatSutra",
     "owner": "Shabnam",
-    "description": "AI-assisted requirement generation workflow for OWASP Cornucopia threat modeling sessions. The system accepts selected Cornucopia card IDs, retrieves related card data through the Cornucopia API, enriches context using vector search, and generates draft security requirements with LLM providers such as Gemini or Mistral. Generated outputs are reviewed through a mandatory human review gate before approved requirements are exported to Jira. The design focuses on loose API-based integration between Cornucopia, Threat Dragon, vector retrieval, LLM services, and external workflow systems.",
+    "description": "AI-assisted requirement generation workflow for OWASP Cornucopia threat modelling sessions. The system accepts selected Cornucopia card IDs, retrieves related card data via the Cornucopia API, enriches the context using vector search, and generates draft security requirements using LLM providers such as Gemini or Mistral. Generated outputs are reviewed through a mandatory human review gate before approved requirements are exported to GitHub. The design focuses on loose API-based integration between Cornucopia, Threat Dragon, vector retrieval, LLM services, and external workflow systems.\n\nThis will address the following Github Milestones:\nhttps://github.com/owaspcornucopia/ThreatSutra/milestone/1",
     "id": 0
   },
   "detail": {
@@ -15,7 +15,7 @@
         "diagramType": "EOP",
         "placeholder": "New EoP games diagram description",
         "thumbnail": "./public/content/images/thumbnail.eop.jpg",
-        "version": "2.6.0",
+        "version": "2.6.2",
         "cells": [
           {
             "position": {
@@ -1920,7 +1920,7 @@
             }
           }
         ],
-        "description": "The AI-assisted security requirement prioritization engine will be part of the second phase of this project where we look at how we can make sure the system remembers what previously has been analyzed and take that into consideration when ranking work items for the new user stories."
+        "description": "The AI-assisted security requirement prioritization engine will be part of the second phase of this project where we look at how we can make sure the system remembers what previously has been analyzed and take that into consideration when ranking work items for the new user stories. "
       },
       {
         "id": 2,
@@ -2157,7 +2157,7 @@
           {
             "position": {
               "x": 573.9999999999995,
-              "y": 330
+              "y": 330.00000000000045
             },
             "size": {
               "width": 140,
@@ -2273,62 +2273,67 @@
               "privilegeLevel": "",
               "threats": [
                 {
-                  "id": "480d19b3-eada-4995-869d-b13d39bb56c9",
-                  "title": "New EoP threat",
-                  "status": "Open",
-                  "severity": "TBD",
-                  "eopGameId": "cornucopia",
-                  "description": "Provide a description for this threat",
-                  "mitigation": "Provide remediation for this threat or a reason if status is N/A",
-                  "modelType": "EOP",
-                  "new": true,
-                  "number": 1,
-                  "score": ""
-                },
-                {
                   "id": "b95bf6e0-a923-40ee-b9f6-87ac1846e975",
                   "title": "LLM9: Deckard can embed malicious instructions in external content like documents, emails, or web pages which are processed by the model, leading to unintended behavior or data exfiltration",
                   "status": "Open",
                   "severity": "TBD",
-                  "type": null,
+                  "type": "cornucopia-companion",
                   "eopGameId": "cornucopia",
-                  "description": "LLM9: ref: https://cornucopia.owasp.org/cards/LLM9#What-can-go-wrong?\n",
+                  "description": "This threat is related to the AI orchestrator that is part of the implementation the GitHub issues:\n\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/5\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/6\n",
                   "mitigation": "LLM9: https://cornucopia.owasp.org/cards/LLM9#What-are-we-going-to-do-about-it?",
                   "modelType": "EOP",
                   "new": false,
                   "number": 3,
                   "score": "",
-                  "cardSuit": null
+                  "cardSuit": "Large Language Models",
+                  "cardNumber": "LLM9"
                 },
                 {
                   "id": "6f21f425-5f51-43e0-9859-6ac90794eb27",
                   "title": "VE3: Robert can input malicious data because the allowed protocol format is not being checked, or duplicates are accepted, or the structure is not being verified, or the individual data elements are not being sanitized, or preferably validated for format, type, range, size, length and a whitelist of allowed characters or formats",
                   "status": "Open",
                   "severity": "TBD",
-                  "type": null,
+                  "type": "cornucopia",
                   "eopGameId": "cornucopia",
-                  "description": "VE3: https://cornucopia.owasp.org/cards/VE3#What-can-go-wrong?",
+                  "description": "This threat is related to the AI orchestrator that is part of the implementation the GitHub issues:\n\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/5\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/6",
                   "mitigation": "VE3: https://cornucopia.owasp.org/cards/VE3#What-are-we-going-to-do-about-it?\n\n- Validate JSON, only allowed characters allowed (white list of characters)\n- Validate Github issues (titles and descriptions)\n- Validate Cornucopia API Responses.\n- Sanitize the result before sending LLM data to the human review.",
                   "modelType": "EOP",
                   "new": false,
                   "number": 4,
                   "score": "",
-                  "cardSuit": null
+                  "cardSuit": "DATA VALIDATION & ENCODING",
+                  "cardNumber": "VE3"
                 },
                 {
                   "id": "84fcfa2f-0808-45ba-b28f-bd40a215839f",
                   "title": "CJ: Roman can exploit the application because it was insecurely compiled or deployed, or its configuration is not secure by default, or because security information was not documented, or passed on to operational teams, or the user is not warned and access blocked when the expected security features are unsupported or disabled",
                   "status": "Open",
                   "severity": "TBD",
-                  "type": null,
+                  "type": "cornucopia",
                   "eopGameId": "cornucopia",
-                  "description": "CJ: https://cornucopia.owasp.org/cards/CJ#What-can-go-wrong?\n\nSomeone could modify the system context of the LLM so that it does not work as intended.",
+                  "description": "This threat is related to the AI orchestrator that is part of the implementation the GitHub issues:\n\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/5\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/6\n\nSomeone could modify the system context of the LLM so that it does not work as intended.",
                   "mitigation": "CJ: https://cornucopia.owasp.org/cards/CJ#What-are-we-going-to-do-about-it?\n\nWe need a good process around how to deal with changes to the system context.",
                   "modelType": "EOP",
                   "new": false,
                   "number": 6,
                   "score": "",
-                  "cardSuit": null
+                  "cardSuit": "CORNUCOPIA",
+                  "cardNumber": "CJ"
+                },
+                {
+                  "id": "115cb099-6134-4ff7-bbe8-22e24b77bc28",
+                  "title": "Given that I can trick the orchestrator by supplying instructions to it, I can get it to reveal the system context/prompt",
+                  "status": "Open",
+                  "severity": "TBD",
+                  "type": "cornucopia-companion",
+                  "description": "This threat is related to the AI orchestrator that is part of the implementation the GitHub issues:\n\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/5\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/6",
+                  "mitigation": "For testing: \n\nhttps://github.com/OWASP/www-project-ai-testing-guide/blob/main/Document/content/tests/AITG-APP-01_Testing_for_Prompt_Injection.md\n\nThe system prompt needs to be defined in such a way that it interpret input from Github as text only and not as instructions. \nWe need to ensure that the orchestrator make an analysis of whether the input is relevant or not. An additional request can be made to the AI model to  make sure the GitHub issue is analysed with regard to relevance in relation to the milestone and the other GitHub issues.",
+                  "modelType": "EOP",
+                  "new": false,
+                  "number": 9,
+                  "score": "",
+                  "cardSuit": "Large Language Models",
+                  "cardNumber": "LLMX"
                 }
               ]
             },
@@ -2464,30 +2469,62 @@
                   "title": "LLMQ: Kyle can exploit insecure handling of model outputs that are used directly in downstream systems, enabling injection attacks, remote code execution, or unauthorized actions",
                   "status": "Open",
                   "severity": "TBD",
-                  "type": null,
+                  "type": "cornucopia-companion",
                   "eopGameId": "cornucopia",
-                  "description": "LLMQ: OWASP Threat Dragon JSON file may contain prompt injections that could affect the human review process.",
+                  "description": "This threat is related to the AI orchestrator that is part of the implementation the GitHub issues:\n\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/5\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/6\n\nLLMQ: OWASP Threat Dragon JSON file may contain prompt injections that could affect the human review process.",
                   "mitigation": "Ref: https://cornucopia.owasp.org/cards/LLMQ#What-are-we-going-to-do-about-it?\n\nWhat are we going to do about it?\n\nImplement defenses against prompt injection.\nLog only the minimum AI interaction metadata needed for security monitoring, and ensure any prompt or output content included in logs is minimized and redacted or anonymized before storage.\nDetect AI-specific attack patterns (jailbreak, prompt injection, model extraction, multi-turn trajectory attacks, covert channels over LLM endpoints) and enrich security events with AI-specific context so that downstream detection and response systems can act on them.\nMonitor and alert when abuse is detected.\n\nOWASP AISVS: 2.1.1-9,2.2.1-3,2.3.1-3,2.4.1-4,13.1.1-8,13.2.1-10,13.5.1-3\nOWASP AITG: APP-01,APP-05\nMITRE ATLAS: AML.T0050\nOWASP LLM TOP10: LLM05:2025\nCWE: CWE-1426,CWE-94,CWE-77",
                   "modelType": "EOP",
                   "new": false,
                   "number": 2,
                   "score": "",
-                  "cardSuit": null
+                  "cardSuit": "Large Language Models",
+                  "cardNumber": "LLMQ"
                 },
                 {
                   "id": "2b79e42a-018e-45ae-9929-63375292ad53",
                   "title": "VE3: Robert can input malicious data because the allowed protocol format is not being checked, or duplicates are accepted, or the structure is not being verified, or the individual data elements are not being sanitized, or preferably validated for format, type, range, size, length and a whitelist of allowed characters or formats",
                   "status": "Open",
                   "severity": "TBD",
-                  "type": null,
+                  "type": "cornucopia",
                   "eopGameId": "cornucopia",
-                  "description": "VE3: https://cornucopia.owasp.org/cards/VE3#What-are-we-going-to-do-about-it?",
+                  "description": "This threat is related to the AI orchestrator that is part of the implementation the GitHub issues:\n\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/5\nhttps://github.com/owaspcornucopia/ThreatSutra/issues/6",
                   "mitigation": "VE: https://cornucopia.owasp.org/cards/VE3#What-are-we-going-to-do-about-it?",
                   "modelType": "EOP",
                   "new": false,
                   "number": 5,
                   "score": "",
-                  "cardSuit": null
+                  "cardSuit": "DATA VALIDATION & ENCODING",
+                  "cardNumber": "VE3"
+                },
+                {
+                  "id": "f838cfb2-c519-49fa-8232-b5e5c332515d",
+                  "title": "If we are overreliant on the AI orchestrator output we may deliver false requirements and tests to the team implementing the user stories",
+                  "status": "Open",
+                  "severity": "TBD",
+                  "type": "cornucopia-companion",
+                  "description": "This is relevant for implementing the human review gate: https://github.com/owaspcornucopia/ThreatSutra/issues/7",
+                  "mitigation": "We need to ensure that the orchestrator make an analysis of whether the input is relevant or not. An additional request can be made to the AI model to  make sure the GitHub issue is analysed with regard to relevance in relation to the milestone and the other GitHub issues. Also implement a score from one to 10 on whether a specific issue is relevant to the security requirement analysis and the work that needs to be completed as part of the upcoming milestone.\n\nThe score should be sent back separately to the human reviewer so that they can be colored differently than the rest of the input. If score is 8-10 (Color the score green). If score is between 5-8 (Color the score yellow) and if score is between 1-4 (color the score red). The AI provider should have functionality that helps in implementing scoring. \n\nAlso see: https://cornucopia.owasp.org/edition/companion/LLM3/1.0/en#What-are-we-going-to-do-about-it?",
+                  "modelType": "EOP",
+                  "new": false,
+                  "number": 8,
+                  "score": "",
+                  "cardSuit": "Large Language Models",
+                  "cardNumber": "LLM3"
+                },
+                {
+                  "id": "56161644-e900-4a4e-9e61-a4a8ef32c3b7",
+                  "title": "Kyle can input malicious link or malicious user story data that may either be used as an attack against the security analyst or lead to a insecure system design",
+                  "status": "Open",
+                  "severity": "TBD",
+                  "type": "cornucopia-companion",
+                  "description": "This is related to implementing the following Github issue: https://github.com/owaspcornucopia/ThreatSutra/issues/7 ",
+                  "mitigation": "- Implement defenses against prompt injection.\nE.g: Enable provider jailbreaking defenses through configuring the AI model used for security requirements analysis.\n\nFor testing: \n\nhttps://github.com/OWASP/www-project-ai-testing-guide/blob/main/Document/content/tests/AITG-APP-01_Testing_for_Prompt_Injection.md\nhttps://github.com/OWASP/www-project-ai-testing-guide/blob/main/Document/content/tests/AITG-APP-05_Testing_for_Unsafe_Outputs.md\n \nRequirements are defined: \n\nhttps://github.com/OWASP/AISVS/blob/main/1.0/en/0x10-C02-Input-Validation.md#c21-prompt-injection-defense \n\nThe system prompt needs to be defined in such a way that it interpret input from Github as text only and not as instructions. \nWe need to ensure that the orchestrator make an analysis of whether the input is relevant or not. An additional request can be made to the AI model to  make sure the GitHub issue is analysed with regard to relevance in relation to the milestone and the other GitHub issues. Also implement a score from one to 10 on whether a specific issue is relevant to the security requirement analysis and the work that needs to be completed as part of the upcoming milestone.\n\nhttps://github.com/OWASP/AISVS/blob/main/1.0/en/0x10-C02-Input-Validation.md#c21-prompt-injection-defense (input could be hex encoded or be encoded as utf codes which the AI does not detect as malicious.)\n\n- Log only the minimum AI interaction metadata needed for security monitoring, and ensure any prompt or output content included in logs is minimized and redacted or anonymized before storage.\n- Detect AI-specific attack patterns (jailbreak, prompt injection, model extraction, multi-turn trajectory attacks, covert channels over LLM endpoints) and enrich security events with AI-specific context so that downstream detection and response systems can act on them.\n- Monitor and alert when abuse is detected.",
+                  "modelType": "EOP",
+                  "new": false,
+                  "number": 10,
+                  "score": "",
+                  "cardSuit": "Large Language Models",
+                  "cardNumber": "LLMQ"
                 }
               ]
             }
@@ -2728,7 +2765,7 @@
           },
           {
             "position": {
-              "x": 853.7499999999993,
+              "x": 850,
               "y": 230
             },
             "size": {
@@ -2740,8 +2777,8 @@
                 "text": "Gemini/Mistral"
               },
               "body": {
-                "stroke": "#333333",
-                "strokeWidth": 1.5,
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "strokeDasharray": null
               }
             },
@@ -2838,9 +2875,25 @@
               "isTrustBoundary": false,
               "outOfScope": false,
               "reasonOutOfScope": "",
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "providesAuthentication": false,
-              "threats": []
+              "threats": [
+                {
+                  "id": "6caf76eb-5640-444a-b322-84902878f890",
+                  "title": "Given that we don't have more tokens to use, we won't be able to complete the security requirement analysis",
+                  "status": "Open",
+                  "severity": "TBD",
+                  "type": "cornucopia-companion",
+                  "description": "Provide a description for this threat",
+                  "mitigation": "Provide remediation for this threat or a reason if status is N/A",
+                  "modelType": "EOP",
+                  "new": false,
+                  "number": 7,
+                  "score": "",
+                  "cardSuit": "Large Language Models",
+                  "cardNumber": "LLM2"
+                }
+              ]
             }
           },
           {
@@ -3492,11 +3545,11 @@
             }
           }
         ],
-        "description": "AI-assisted security requirement generation is part of the first phase where we look at how we can use AI to generate suggestions for tests and work items that should be worked on based on inputs from the Cornucopia game,  Threat Dragon session, Cornucopia API and the user story under development."
+        "description": "AI-assisted security requirement generation is part of the first phase where we look at how we can use AI to generate suggestions for tests and work items that should be worked on based on inputs from the Cornucopia game,  Threat Dragon session, Cornucopia API and the user story under development. The epic/milestone is defined as part of the following GitHub milestone:  https://github.com/owaspcornucopia/ThreatSutra/milestone/1"
       }
     ],
     "diagramTop": 3,
     "reviewer": "Johan Sydseter",
-    "threatTop": 6
+    "threatTop": 10
   }
 }

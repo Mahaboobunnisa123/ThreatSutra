@@ -1,0 +1,7 @@
+{
+  "card_id": "LLM9",
+  "type": "cornucopiacompanion",
+  "scenario": "Deckard can embed malicious instructions in external content like documents, emails, or web pages which are processed by the model, leading to unintended behavior or data exfiltration.",
+  "requirement": "The system must treat all content coming from external sources (such as GitHub issues, documents, or web pages) as plain text data to be analyzed, never as instructions to be followed.",
+  "mitigation": "The system prompt needs to be defined in such a way that it interprets input from GitHub as text only and not as instructions. The orchestrator must analyze whether the input is relevant before acting on it, and an additional request can be made to the AI model to check that a GitHub issue is relevant to the milestone and the other GitHub issues."
+}

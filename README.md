@@ -30,6 +30,11 @@ The application currently performs the following workflow:
 ```
 ThreatSutra/
 │
+├── docs/
+│   ├── diagrams/
+│   ├── phase1_qa_review_2026-07-13.md
+│   └── phase1_qa_summary_2026-07-13.md
+│
 ├── outputs/
 ├── sample_data/
 │   ├── threat_dragon_sample.json
@@ -42,6 +47,7 @@ ThreatSutra/
 │   ├── prompts.py
 │   └── validation.py
 │
+├── .env.example
 ├── requirements.txt
 ├── .gitignore
 └── README.md
@@ -89,6 +95,8 @@ Add your Gemini API key:
 GEMINI_API_KEY=YOUR_API_KEY
 ```
 
+An example file is included at `.env.example`.
+
 ---
 
 ## Running the Project
@@ -129,6 +137,19 @@ Threat Dragon Sample JSON
 
 ---
 
+## Review Documents
+
+The current QA and AppSec assessment for this prototype is documented here:
+
+- `docs/phase1_qa_review_2026-07-13.md`
+- `docs/phase1_qa_summary_2026-07-13.md`
+
+These documents summarize what is already working, what is still missing for Phase 1, and the recommended implementation order for the remaining work.
+
+---
+
 ## Current Status
 
 This implementation represents the current Phase 1 prototype using sample data. The remaining Phase 1 work is in progress.
+
+The prototype currently demonstrates the review flow and model integration, but it does not yet complete the real-source ingestion and joined-context work described by the active GitHub issues.

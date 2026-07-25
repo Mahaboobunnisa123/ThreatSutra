@@ -1,24 +1,40 @@
-""" What it does:
-  1. Load sample_data data (Threat Dragon and Cornucopia card)
-  2. Build the two prompts using prompts.py
-  3. Send each prompt to the AI model
-  4. Return the evil user story and the verification test together
 """
-import json
+Coordinates the ThreatSutra analysis pipeline.
+This module orchestrates the flow of data between project inputs,context preparation, AI generation, validation, review, and downstream
+integration components.
+"""
 import os
 from dotenv import load_dotenv
 from google import genai
+from adapters.threat_dragon import ThreatDragonReader
+from adapters.cornucopia import CornucopiaClient
+from adapters.github_milestone import GitHubMilestoneClient
 from prompts import build_evil_user_story_prompt, build_verification_test_prompt
 from validation import is_valid_threat, is_valid_card
-load_dotenv()
-PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
-SAMPLE_DIR = os.path.join(PROJECT_ROOT, "sample_data")
-THREAT_SAMPLE_PATH = os.path.join(SAMPLE_DIR, "threat_dragon_sample.json")
-CARD_SAMPLE_PATH = os.path.join(SAMPLE_DIR, "cornucopia_card_sample.json")
 
-def load_data(path: str) -> dict:         #Reads a JSON fixture file from disk and returns it as a dictionary
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+load_dotenv()
+
+GITHUB_REPO = os.environ.get("GITHUB_REPO", "owaspcornucopia/ThreatSutra")
+
+# A Threat Dragon threat's `type` field tells us which Cornucopia edition
+# its card belongs to. Only these two appear in the current model; add
+# to this mapping if a future threat model uses one of the others
+# (mobileapp, dbd, eop).
+EDITION_BY_THREAT_TYPE = {
+    "cornucopia": "webapp",
+    "cornucopia-companion": "companion",
+}
+DEFAULT_EDITION = "webapp"
+
+def resolve_edition(threat: dict) -> str:      #Maps a Threat Dragon threat's `type` field to a Cornucopia edition.
+    threat_type = threat.get("type")
+    if threat_type not in EDITION_BY_THREAT_TYPE:
+        raise ValueError(
+            f"Unknown Threat Dragon threat type '{threat_type}' - no Cornucopia "
+            f"edition mapping exists for it. Add it to EDITION_BY_THREAT_TYPE "
+            f"in orchestrator.py (currently mapped types: {sorted(EDITION_BY_THREAT_TYPE)})."
+        )
+    return EDITION_BY_THREAT_TYPE[threat_type]
 
 def call_ai_model(prompt: str) -> str:     #Sends a prompt to the Gemini model and returns the plain text response using the Google GenAI client. Raises an error if GEMINI_API_KEY is not set.
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -32,28 +48,35 @@ def call_ai_model(prompt: str) -> str:     #Sends a prompt to the Gemini model a
         model="gemini-2.5-flash",
         contents=prompt,
     )
-    return response.text.strip()    
+    return response.text.strip()
 
-def generate_evil_user_story(threat: dict) -> str:      #Issue-6: turns a threat data into an evil user story
+def generate_evil_user_story(threat: dict) -> str:      #Issue-6: turns threat data into an evil user story. 
     if not is_valid_threat(threat):
         raise ValueError("Threat data did not pass validation.")
     prompt = build_evil_user_story_prompt(threat)
     return call_ai_model(prompt)
 
-def generate_verification_test(card: dict) -> str:      #Issue-5: turns a card data into a verification test.
+def generate_verification_test(card: dict) -> str:      #Issue-5: turns card data into a verification test. 
     if not is_valid_card(card):
         raise ValueError("Card data did not pass validation.")
     prompt = build_verification_test_prompt(card)
     return call_ai_model(prompt)
 
-def run_pipeline() -> dict:              #Runs the pipeline using sample data and returns a dictionary with both generated outputs, ready for human review.
-    threat = load_data(THREAT_SAMPLE_PATH)
-    card = load_data(CARD_SAMPLE_PATH)
-    evil_user_story = generate_evil_user_story(threat)
-    verification_test = generate_verification_test(card)
+def process_threat(threat: dict, cornucopia_client: CornucopiaClient, milestones: list) -> dict:
+    """
+    Processes exactly one Threat Dragon threat: resolves its Cornucopia edition, finds the matching card, and combines threat + card +
+    milestone context into one normalized dict. No LLM calls here yet.
+    """
+    edition = resolve_edition(threat)
+    card = cornucopia_client.find_card(edition, threat.get("cardNumber"))
     return {
-        "source_threat_id": threat.get("threat_id"),
-        "source_card_id": card.get("card_id"),
-        "evil_user_story": evil_user_story,
-        "verification_test": verification_test,
+        "threat": threat,
+        "cornucopia_card": card,
+        "milestones": milestones,
     }
+
+def run_pipeline() -> list:              #Runs the pipeline for every Threat Dragon threat, one threat at a time, and returns normalized threat+card+milestone context for each 
+    threats = ThreatDragonReader().read_threats()
+    cornucopia_client = CornucopiaClient()
+    milestones = GitHubMilestoneClient(GITHUB_REPO).get_milestones()
+    return [process_threat(threat, cornucopia_client, milestones) for threat in threats]

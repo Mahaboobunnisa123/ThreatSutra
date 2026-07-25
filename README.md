@@ -1,155 +1,155 @@
-# ThreatSutra – Phase 1 
+# ThreatSutra
 
-ThreatSutra is an AI-assisted security orchestration prototype developed as part of Google Summer of Code 2026 under the OWASP Foundation.
-The current implementation focuses on the initial Phase 1 workflow using sample Threat Dragon and Cornucopia data.
+ThreatSutra is an AI-assisted security engineering project developed under the OWASP Foundation as part of Google Summer of Code (GSoC).
 
----
+The project aims to assist security practitioners and development teams by transforming threat models into actionable security engineering artifacts. By combining Threat Dragon threat models, OWASP Cornucopia knowledge, GitHub project context, and Large Language Models (LLMs), ThreatSutra helps generate meaningful security outputs while keeping humans in control of the final decisions.
 
-## Current Features
-
-The application currently performs the following workflow:
-
-1. Loads sample Threat Dragon threat data.
-2. Loads sample Cornucopia card data.
-3. Validates the input data.
-4. Builds prompts for Gemini.
-5. Generates:
-   - Evil User Story (Issue #6)
-   - Verification Test (Issue #5)
-6. Displays both generated outputs through the command-line interface.
-7. Allows the reviewer to:
-   - Approve
-   - Reject
-   - Edit
-8. Saves the reviewed output automatically to the `outputs/` folder for future reference.
+> **Project Status**
+>
+> ThreatSutra is currently under active development. The repository contains the foundational components being built during the first development phase.
 
 ---
 
-## Project Structure
+## Vision
 
-```
-ThreatSutra/
-│
-├── docs/
-│   ├── diagrams/
-│   ├── phase1_qa_review_2026-07-13.md
-│   └── phase1_qa_summary_2026-07-13.md
-│
-├── outputs/
-├── sample_data/
-│   ├── threat_dragon_sample.json
-│   └── cornucopia_card_sample.json
-│
-├── src/
-│   ├── __init__.py
-│   ├── cli.py
-│   ├── orchestrator.py
-│   ├── prompts.py
-│   └── validation.py
-│
-├── .env.example
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+ThreatSutra aims to streamline security requirement generation by connecting multiple OWASP resources into a single workflow.
+
+The long-term vision includes:
+
+- Reading OWASP Threat Dragon threat models
+- Enriching threats using OWASP Cornucopia knowledge
+- Incorporating GitHub project context
+- Generating AI-assisted security engineering outputs
+- Supporting human review before acceptance
+- Exporting approved outputs back into development workflows
+
+Human oversight remains a core principle throughout the process.
 
 ---
 
-## Installation
+## Current Development
 
-Create a virtual environment:
+The current implementation focuses on establishing the project's core architecture and integration layer.
 
-```bash
-python -m venv .venv
-```
+Current work includes:
 
-Activate it:
+- Threat Dragon model processing
+- OWASP Cornucopia integration
+- GitHub milestone retrieval
+- AI orchestration foundation
+- Shared project context management
+- Command-line interface (CLI)
 
-Linux / WSL
-
-```bash
-source .venv/bin/activate
-```
-
-Windows
-
-```powershell
-.venv\Scripts\activate
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
+These components form the foundation for future AI-powered security analysis.
 
 ---
 
-## Configuration
+## Planned Workflow
 
-Create a `.env` file from `.env.example`.
-
-Add your Gemini API key:
+The intended workflow for ThreatSutra is:
 
 ```text
-GEMINI_API_KEY=YOUR_API_KEY
+Threat Dragon Model
+        │
+        ▼
+Threat Extraction
+        │
+        ▼
+Cornucopia Knowledge
+        │
+        ▼
+GitHub Project Context
+        │
+        ▼
+AI Orchestrator
+        │
+        ▼
+Security Engineering Outputs
+        │
+        ▼
+Human Review
+        │
+        ▼
+Approved Results
 ```
 
-An example file is included at `.env.example`.
+Additional capabilities will be introduced as the project progresses.
 
 ---
 
-## Running the Project
+## Repository Structure
 
-From the project root:
+```
+src/
+├── adapters/          # External system integrations
+├── orchestrator.py    # Coordinates the processing pipeline
+├── context.py         # Shared analysis context
+├── prompts.py         # Prompt templates
+├── validation.py      # Validation utilities
+├── review_store.py    # Review data management
+└── cli.py             # Command-line interface
 
-```bash
-python src/cli.py
+tests/                 # Automated tests
+docs/                  # Project documentation
 ```
 
 ---
 
-## Current Workflow
+## Technology Stack
 
-```
-Threat Dragon Sample JSON
-            │
-            ▼
-      Input Validation
-            │
-            ▼
-      Prompt Generation
-            │
-            ▼
-      Gemini API
-            │
-            ▼
- Evil User Story
- Verification Test
-            │
-            ▼
-     Human Review Gate
-(Approve / Reject / Edit)
-            │
-            ▼
- Automatic Output Saving
-```
+- Python
+- OWASP Threat Dragon
+- OWASP Cornucopia
+- GitHub API
+- Google Gemini
+- JSON
+- Command-Line Interface (CLI)
 
 ---
 
-## Review Documents
+## Project Roadmap
 
-The current QA and AppSec assessment for this prototype is documented here:
+ThreatSutra is being developed incrementally.
 
-- `docs/phase1_qa_review_2026-07-13.md`
-- `docs/phase1_qa_summary_2026-07-13.md`
+### Phase 1
 
-These documents summarize what is already working, what is still missing for Phase 1, and the recommended implementation order for the remaining work.
+- Foundation architecture
+- Threat Dragon integration
+- Cornucopia integration
+- GitHub context retrieval
+- AI orchestration
+- Human review workflow
+
+### Future Enhancements
+
+Future development may include additional AI capabilities, richer project context, and expanded workflow integrations as the project evolves.
 
 ---
 
-## Current Status
+## Contributing
 
-This implementation represents the current Phase 1 prototype using sample data. The remaining Phase 1 work is in progress.
+Contributions, feedback, and discussions are welcome.
 
-The prototype currently demonstrates the review flow and model integration, but it does not yet complete the real-source ingestion and joined-context work described by the active GitHub issues.
+Please refer to:
+
+- `CONTRIBUTING.md`
+- `CODE_OF_CONDUCT.md`
+
+before submitting issues or pull requests.
+
+---
+
+## License
+
+This project is licensed under the terms described in the `LICENSE` file.
+
+---
+
+## Acknowledgements
+
+ThreatSutra is developed under the **OWASP Foundation** as part of **Google Summer of Code (GSoC)**.
+
+The project builds upon the excellent work of the OWASP community, particularly:
+
+- OWASP Threat Dragon
+- OWASP Cornucopia

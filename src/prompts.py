@@ -1,5 +1,4 @@
-"""   This file holds the exact wording we send to the AI model.
-Keeping prompt text here (instead of inside orchestrator.py) means
+"""   This file holds the exact wording we send to the AI model. Keeping prompt text here (instead of inside orchestrator.py) means
 we can tweak wording without touching the logic that calls the AI.
 """
 def build_evil_user_story_prompt(threat: dict) -> str:

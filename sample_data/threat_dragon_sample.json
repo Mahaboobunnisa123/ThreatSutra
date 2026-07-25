@@ -1,7 +1,0 @@
-{
-  "threat_id": "9",
-  "title": "Given that I can trick the orchestrator by supplying instructions to it, I can get it to reveal the system context/prompt",
-  "description": "An attacker crafts input that is processed by the AI orchestrator. Because the orchestrator does not clearly separate trusted instructions from untrusted data, the attacker's input is treated as a command rather than as text to analyze.",
-  "what_can_go_wrong": "The attacker convinces the AI orchestrator to reveal its system prompt, or to ignore its original instructions and instead follow instructions hidden inside a GitHub issue or other external content.",
-  "cornucopia_card_id": "LLM9"
-}

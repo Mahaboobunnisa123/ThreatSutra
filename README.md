@@ -80,17 +80,26 @@ Additional capabilities will be introduced as the project progresses.
 ## Repository Structure
 
 ```
-src/
-├── adapters/          # External system integrations
-├── orchestrator.py    # Coordinates the processing pipeline
-├── context.py         # Shared analysis context
-├── prompts.py         # Prompt templates
-├── validation.py      # Validation utilities
-├── review_store.py    # Review data management
-└── cli.py             # Command-line interface
-
-tests/                 # Automated tests
-docs/                  # Project documentation
+ThreatSutra/
+├── docs/
+│   └── Threat_Dragon_Model/    # Threat Dragon model and DFD
+├── src/
+│   ├── adapters/               # External system integrations
+│   │   ├── cornucopia.py       # OWASP Cornucopia API client
+│   │   ├── github_milestone.py # GitHub milestone integration
+│   │   └── threat_dragon.py    # Threat Dragon model reader
+│   ├── orchestrator.py         # Coordinates the analysis workflow
+│   ├── prompts.py              # Prompt templates
+│   ├── validation.py           # Validation utilities
+│   └── cli.py                  # Command-line interface
+├── .env.example                # Example environment configuration
+├── .gitignore                  # Git ignore rules
+├── CODEOWNERS                  # Repository ownership
+├── CODE_OF_CONDUCT.md          # Community code of conduct
+├── CONTRIBUTING.md             # Contribution guidelines
+├── LICENSE.md                  # Project license
+├── README.md                   # Project overview and setup
+└── requirements.txt            # Python dependencies
 ```
 
 ---

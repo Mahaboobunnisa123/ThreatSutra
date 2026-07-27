@@ -153,12 +153,11 @@ before submitting issues or pull requests.
 This project is licensed under the terms described in the `LICENSE` file.
 
 ---
-
 ## Acknowledgements
 
-ThreatSutra is developed under the **OWASP Foundation** as part of **Google Summer of Code (GSoC)**.
+ThreatSutra is being developed under the **OWASP Foundation** through **Google Summer of Code (GSoC) 2026**.
 
-The project builds upon the excellent work of the OWASP community, particularly:
+The project extends and integrates the work of the OWASP community, particularly:
 
-- OWASP Threat Dragon
-- OWASP Cornucopia
+- **OWASP Threat Dragon**, which provides the threat modeling foundation used by ThreatSutra.
+- **OWASP Cornucopia**, whose security knowledge base and threat cards form the basis for AI-assisted security requirement generation.

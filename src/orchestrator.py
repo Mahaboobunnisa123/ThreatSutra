@@ -6,9 +6,9 @@ integration components.
 import os
 from dotenv import load_dotenv
 from google import genai
-from adapters.threat_dragon import ThreatDragonReader
-from adapters.cornucopia import CornucopiaClient
-from adapters.github_milestone import GitHubMilestoneClient
+from src.adapters.ThreatDragonReader import ThreatDragonReader
+from src.adapters.CornucopiaClient import CornucopiaClient
+from src.adapters.GitHubMilestoneClient import GitHubMilestoneClient
 from prompts import build_evil_user_story_prompt, build_verification_test_prompt
 from validation import is_valid_threat, is_valid_card
 

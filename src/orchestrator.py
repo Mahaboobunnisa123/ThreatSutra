@@ -51,13 +51,13 @@ def call_ai_model(prompt: str) -> str:     #Sends a prompt to the Gemini model a
     return response.text.strip()
 
 def generate_evil_user_story(threat: dict) -> str:      #Issue-6: turns threat data into an evil user story. 
-    if not is_valid_threat(threat):
+    if not validate_threat(threat):
         raise ValueError("Threat data did not pass validation.")
     prompt = build_evil_user_story_prompt(threat)
     return call_ai_model(prompt)
 
 def generate_verification_test(card: dict) -> str:      #Issue-5: turns card data into a verification test. 
-    if not is_valid_card(card):
+    if not validate_card(card):
         raise ValueError("Card data did not pass validation.")
     prompt = build_verification_test_prompt(card)
     return call_ai_model(prompt)

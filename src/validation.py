@@ -73,38 +73,118 @@ def sanitize_text(text: str) -> str:
         return ""
     return "".join(ch for ch in text if ord(ch) >= 32 or ch in "\t\n")
 
+def validate_threat(threat: dict) -> dict:
+    """
+    Validates one Threat Dragon threat and returns it unchanged.
+    Raises ValidationError naming the offending field.
+    """
+    _require_mapping(threat, "Threat Dragon threat")
+    source = f"Threat Dragon threat '{threat.get('id', '<no id>')}'"
+    total = 0
+    for field in REQUIRED_THREAT_FIELDS:
+        total += _validate_text(threat.get(field), field, source)
+    _validate_total_length(total, source)
+    return threat
+
+def validate_card(card: dict) -> dict:
+    """
+    Validates one Cornucopia card from the API and returns it unchanged.
+    Only sectionID is required, since that is the field the card lookup matches on;
+    other text fields are validated when present.
+    """
+    _require_mapping(card, "Cornucopia card")
+    source = f"Cornucopia card '{card.get('sectionID', '<no sectionID>')}'"
+    total = 0
+    for field in REQUIRED_CARD_FIELDS:
+        total += _validate_text(card.get(field), field, source)
+    for field in OPTIONAL_CARD_TEXT_FIELDS:
+        if field in card:
+            total += _validate_text(card.get(field), field, source, required=False)
+    for field in ("links", "tags"):
+        if field in card and not isinstance(card[field], list):
+            _fail(source, f"field '{field}' must be a list, got {type(card[field]).__name__}.")        
+    _validate_total_length(total, source)
+    return card
+
+def validate_milestone(milestone: dict) -> dict:
+    """
+    Validates one GitHub milestone and returns it unchanged.
+    'number' must be an integer; 'title' must be non-empty text.
+    """
+    _require_mapping(milestone, "GitHub milestone")
+    source = f"GitHub milestone '{milestone.get('number', '<no number>')}'"
+    number = milestone.get("number")
+    if not isinstance(number, int) or isinstance(number, bool):
+        _fail(source, f"field 'number' must be an integer, got {type(number).__name__}.")
+    total = _validate_text(milestone.get("title"), "title", source)
+    for field in OPTIONAL_MILESTONE_TEXT_FIELDS:
+        if field in milestone:
+            total += _validate_text(milestone.get(field), field, source, required=False)
+    _validate_total_length(total, source)
+    return milestone
+
+def validate_threats(threats: list) -> list:
+    """Validates every threat read from a Threat Dragon model. Fails closed on the first bad entry."""
+    _validate_list(threats, "Threat Dragon threat list")
+    for index, threat in enumerate(threats):
+        try:
+            validate_threat(threat)
+        except ValidationError as exc:
+            raise ValidationError(f"Threat at position {index}: {exc}") from exc
+    return threats
+
+
+def validate_milestones(milestones: list) -> list:
+    """Validates every milestone fetched from GitHub. Fails closed on the first bad entry."""
+    _validate_list(milestones, "GitHub milestone list")
+    for index, milestone in enumerate(milestones):
+        try:
+            validate_milestone(milestone)
+        except ValidationError as exc:
+            raise ValidationError(f"Milestone at position {index}: {exc}") from exc
+    return milestones
+
 def is_valid_threat(threat: dict) -> bool:
     """
-    Determine whether a Threat Dragon threat is valid. This is currently a placeholder implementation that accepts all input.
-    It exists to establish a stable validation interface for the rest of the application.
-    Future implementations may verify:
-    - Required fields
-    - Field types
-    - Empty values
-    - Character restrictions
-    - Maximum field lengths
-    - Other validation rules as needed
+    Determines whether a Threat Dragon threat is valid.
+    Use validate_threat() instead when you need the reason for the failure.
     Args:
         threat: A dictionary representing a Threat Dragon threat.
     Returns:
-        True if the threat is considered valid.
+        True if the threat passes validation, False otherwise.
     """
+    try:
+        validate_threat(threat)
+    except ValidationError:
+        return False
     return True
+
 def is_valid_card(card: dict) -> bool:
     """
-    Determine whether a Cornucopia card is valid.
-    This is currently a placeholder implementation that accepts all input. It exists to establish a stable validation interface for the rest of
-    the application.
-    Future implementations may verify:
-    - Required fields
-    - Field types
-    - Empty values
-    - Character restrictions
-    - Maximum field lengths
-    - Other validation rules as needed
+    Determines whether a Cornucopia card is valid.
+    Use validate_card() instead when you need the reason for the failure.
     Args:
         card: A dictionary representing a Cornucopia card.
     Returns:
-        True if the card is considered valid.
+        True if the card passes validation, False otherwise.
     """
+    try:
+        validate_card(card)
+    except ValidationError:
+        return False
+    return True
+
+def is_valid_milestone(milestone: dict) -> bool:
+    """
+    Determines whether a GitHub milestone is valid.
+    Use validate_milestone() instead when you need the reason for the failure.
+    Args:
+        milestone: A dictionary representing a GitHub milestone.
+    Returns:
+        True if the milestone passes validation, False otherwise.
+    """
+    try:
+        validate_milestone(milestone)
+    except ValidationError:
+        return False
     return True

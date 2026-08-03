@@ -11,7 +11,6 @@ import json
 from datetime import datetime
 from orchestrator import run_pipeline
 
-
 def print_header(text: str) -> None:
     print("\n" + "=" * 60)
     print(text)

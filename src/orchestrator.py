@@ -10,7 +10,7 @@ from src.adapters.ThreatDragonReader import ThreatDragonReader
 from src.adapters.CornucopiaClient import CornucopiaClient
 from src.adapters.GitHubMilestoneClient import GitHubMilestoneClient
 from prompts import build_evil_user_story_prompt, build_verification_test_prompt
-from validation import is_valid_threat, is_valid_card
+from validation import (is_valid_threat, is_valid_card, validate_threat, validate_card, validate_threats, validate_milestones,)
 
 load_dotenv()
 
@@ -67,8 +67,10 @@ def process_threat(threat: dict, cornucopia_client: CornucopiaClient, milestones
     Processes exactly one Threat Dragon threat: resolves its Cornucopia edition, finds the matching card, and combines threat + card +
     milestone context into one normalized dict. No LLM calls here yet.
     """
+    validate_threat(threat)
     edition = resolve_edition(threat)
     card = cornucopia_client.find_card(edition, threat.get("cardNumber"))
+    validate_card(card)
     return {
         "threat": threat,
         "cornucopia_card": card,
@@ -76,7 +78,7 @@ def process_threat(threat: dict, cornucopia_client: CornucopiaClient, milestones
     }
 
 def run_pipeline() -> list:              #Runs the pipeline for every Threat Dragon threat, one threat at a time, and returns normalized threat+card+milestone context for each 
-    threats = ThreatDragonReader().read_threats()
+    threats = validate_threats(ThreatDragonReader().read_threats())
     cornucopia_client = CornucopiaClient()
-    milestones = GitHubMilestoneClient(GITHUB_REPO).get_milestones()
+    milestones = validate_milestones(GitHubMilestoneClient(GITHUB_REPO).get_milestones())
     return [process_threat(threat, cornucopia_client, milestones) for threat in threats]

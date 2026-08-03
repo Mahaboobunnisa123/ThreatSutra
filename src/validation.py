@@ -11,7 +11,21 @@ sources such as:
 
 Additional validation rules (such as required fields, character restrictions, length limits, and content validation) will be implemented here as the project matures.
 """
-def is_valid_threat(threat: dict) -> bool:
+MAX_FIELD_LENGTH = 4000        # per text field
+MAX_TOTAL_LENGTH = 20000       # all text fields of one object combined
+MAX_LIST_LENGTH = 500          # threats / milestones accepted from one source
+REQUIRED_THREAT_FIELDS = ("id", "type", "cardNumber", "title", "description", "mitigation")
+REQUIRED_CARD_FIELDS = ("sectionID", "name", "description")
+REQUIRED_MILESTONE_FIELDS = ("number", "title")
+OPTIONAL_CARD_TEXT_FIELDS = ("doctype", "id", "section", "hyperlink", "tooltype")
+OPTIONAL_MILESTONE_TEXT_FIELDS = ("description", "state", "html_url")
+
+class ValidationError(ValueError):     # Raised when external data fails validation. Subclasses ValueError so existing callers that catch ValueError keep working.
+  def _fail(source: str, message: str) -> None:
+    """Raises a ValidationError that names the source and the exact problem."""
+    raise ValidationError(f"Invalid {source}: {message}")  
+
+  def is_valid_threat(threat: dict) -> bool:
     """
     Determine whether a Threat Dragon threat is valid. This is currently a placeholder implementation that accepts all input.
     It exists to establish a stable validation interface for the rest of the application.
@@ -29,7 +43,7 @@ def is_valid_threat(threat: dict) -> bool:
     """
     return True
 
-def is_valid_card(card: dict) -> bool:
+  def is_valid_card(card: dict) -> bool:
     """
     Determine whether a Cornucopia card is valid.
     This is currently a placeholder implementation that accepts all input. It exists to establish a stable validation interface for the rest of

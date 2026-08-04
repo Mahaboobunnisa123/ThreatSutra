@@ -8,7 +8,7 @@ import json
 import os
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-DFD_PATH = os.path.join(PROJECT_ROOT, "docs", "diagrams", "DFD_ThreatSutra.json")
+DFD_PATH = os.path.join(PROJECT_ROOT, "ThreatDragonModels", "DFD_ThreatSutra.json")
 
 class ThreatDragonReader:
     """Reads every threat out of a Threat Dragon model file."""
